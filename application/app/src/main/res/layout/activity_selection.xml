@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="@dimen/sel_screen_padding"
-    tools:context=".SelectionActivity">
+    tools:context=".ui.SelectionActivity">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mediaExtractorId"
