@@ -8,10 +8,16 @@ import java.io.IOException
 import android.content.Context
 
 import android.content.res.AssetFileDescriptor
+import android.media.MediaCodec
 import android.media.MediaFormat.MIMETYPE_VIDEO_AVC
+import android.media.MediaMuxer
+import android.os.Environment
 import com.example.code.Constants.endPointMp4
 import com.example.code.R
+import java.io.File
+import java.lang.Exception
 import java.nio.ByteBuffer
+import java.util.*
 
 
 class DemoMediaExtractor constructor(private val context: Context) {
@@ -31,6 +37,10 @@ class DemoMediaExtractor constructor(private val context: Context) {
 
     private fun selectTrack(numTracks: Int, extractor: MediaExtractor, type: String) {
 
+
+        val bufferInfo = MediaCodec.BufferInfo()
+        bufferInfo.presentationTimeUs = extractor.sampleTime
+
         // Loop the tracks and select the track required
         for (i in 0 until numTracks) {
             // Get <-MEDIA FORMAT-> from the track
@@ -44,13 +54,28 @@ class DemoMediaExtractor constructor(private val context: Context) {
                 val bufferSize = allocateBufferSize(format)
                 // Set the destination buffer
                 val inputBuffer = ByteBuffer.allocate(bufferSize)
+                bufferInfo.size = extractor.readSampleData(inputBuffer, 0)
 
                 while (extractor.readSampleData(inputBuffer,0)>= 0){
                     val trackIndex = extractor.sampleTrackIndex
                     val presentationTimeUs = extractor.sampleTime
+                    val trackCount= extractor.trackCount
+                    val trackFormat = extractor.getTrackFormat(0)
                     /**
                      * Do some thing
                      */
+                   /* val outputPath = prepareOutputPath()
+                    val outputFormat = MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4
+                    val muxer = MediaMuxer(outputPath, outputFormat)
+
+                    val extractorToMuxerTrackIndexMap: HashMap<Int, Int> =
+                        addTracksToMuxerAndGetIndexMap(trackCount,trackFormat, muxer)
+
+                    copySamplesToMuxer(
+                        muxer,extractorToMuxerTrackIndexMap,
+                        trackIndex,inputBuffer,bufferInfo
+                    )
+                    */
                     Timber.tag(TAG).d("trackIndex:$trackIndex-- --presentationTimeUs:$presentationTimeUs")
                     extractor.advance();
                 }
@@ -83,7 +108,57 @@ class DemoMediaExtractor constructor(private val context: Context) {
         return inputBufferSize
     }
 
+    private fun copySamplesToMuxer(
+        muxer: MediaMuxer,
+        extractorToMuxerTrackIndexMap: HashMap<Int, Int>,
+        trackIndex: Int,
+        inputBuffer: ByteBuffer,
+        bufferInfo: MediaCodec.BufferInfo
+    ) {
 
+        try {
+
+            muxer.start()
+
+            var shouldProcess = true
+
+            while (shouldProcess) {
+                extractorToMuxerTrackIndexMap[trackIndex]?.let { trackIndexInMuxer ->
+                    muxer.writeSampleData(trackIndexInMuxer, inputBuffer, bufferInfo)
+                }
+            }
+
+            muxer.stop()
+
+        }catch (ex: Exception){
+            val errorMsg = ex.message
+            Timber.tag(TAG).e(errorMsg)
+            ex.printStackTrace()
+        }
+
+    }
+
+    private fun addTracksToMuxerAndGetIndexMap(
+        trackCount: Int, format: MediaFormat, muxer: MediaMuxer
+    ): HashMap<Int, Int> {
+        val extractorToMuxerTrackIndexMap: HashMap<Int, Int> = HashMap(trackCount)
+        for (i in 0 until trackCount) {
+            extractorToMuxerTrackIndexMap[i] = muxer.addTrack(format)
+        }
+        return extractorToMuxerTrackIndexMap
+    }
+
+    private fun prepareOutputPath() = File(
+        getAppExternalVideoSnippetsStoragePath(context),
+        UUID.randomUUID().toString() + ".mp4"
+    ).absolutePath
+
+    private fun getAppExternalVideoSnippetsStoragePath(context: Context): File {
+        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+            "VideoSnippets")
+        if (!file.exists()) file.mkdir()
+        return file
+    }
 
     /**
      * Remote data source
