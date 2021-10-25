@@ -8,13 +8,18 @@ import java.io.IOException
 import android.content.Context
 
 import android.content.res.AssetFileDescriptor
+import android.media.MediaCodec
+import android.media.MediaFormat.MIMETYPE_VIDEO_AVC
+import android.util.Log
 import com.example.code.Constants.endPointMp4
 import com.example.code.R
+import java.nio.ByteBuffer
 
 
 class DemoMediaExtractor constructor(private val context: Context) {
 
     private val TAG: String = DemoMediaExtractor::class.java.simpleName
+
 
     /**
      * Remote data source
@@ -23,9 +28,9 @@ class DemoMediaExtractor constructor(private val context: Context) {
     fun initiateForRemoteMp4Video() {
 
         try {
-            val mex = MediaExtractor()
-            mex.setDataSource(endPointMp4)
-            val mf = mex.getTrackFormat(0)
+            val extractor = MediaExtractor()
+            extractor.setDataSource(endPointMp4)
+            val mf = extractor.getTrackFormat(0)
 
             val bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE)
             val sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE)
@@ -45,18 +50,18 @@ class DemoMediaExtractor constructor(private val context: Context) {
         }
 
     }
-    
+
     /**
      * Local asset data source
      * * Assuming a raw resource located at "res/raw/localaudio.mp3"
      */
     fun initiateForLocalMp3Video() {
         try {
-            val mex = MediaExtractor()
+            val extractor = MediaExtractor()
             val afd: AssetFileDescriptor = context.resources.openRawResourceFd(R.raw.localaudio)
-            mex.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            extractor.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
 
-            val mf = mex.getTrackFormat(0)
+            val mf = extractor.getTrackFormat(0)
 
             val bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE)
             val sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE)
@@ -72,6 +77,72 @@ class DemoMediaExtractor constructor(private val context: Context) {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+
+    fun initilize(){
+        val extractor = MediaExtractor()
+        extractor.setDataSource(endPointMp4)
+        val numTracks: Int = extractor.trackCount
+        // Select the track that we need
+        selectTrack(numTracks, extractor,MIMETYPE_VIDEO_AVC)
+        // Release the extractor
+        extractor.release();
+    }
+
+
+    private fun selectTrack(numTracks: Int, extractor: MediaExtractor, type: String) {
+
+        // Loop the tracks and select the track required
+        for (i in 0 until numTracks) {
+            // Get <-MEDIA FORMAT-> from the track
+            val format: MediaFormat = extractor.getTrackFormat(i)
+            //  Get <-MIME TYPE-> from the format
+            val mime = format.getString(MediaFormat.KEY_MIME)
+
+
+            if (supportedMimeTypes(mime) && supportedMimeTrackAvailable(mime, type, extractor, i)) {
+                // Get the buffer size needed
+                val bufferSize = allocateBufferSize(format)
+                // Set the destination buffer
+                val inputBuffer = ByteBuffer.allocate(bufferSize)
+
+                while (extractor.readSampleData(inputBuffer,0)>= 0){
+                    val trackIndex = extractor.sampleTrackIndex
+                    val presentationTimeUs = extractor.sampleTime
+                    /**
+                     * Do some thing
+                     */
+                    Timber.tag(TAG).d("trackIndex:$trackIndex-- --presentationTimeUs:$presentationTimeUs")
+                    extractor.advance();
+                }
+            }else{
+                Timber.tag(TAG).d("Supported mime type is not available !")
+            }
+        }
+    }
+
+    private fun supportedMimeTrackAvailable(mime: String?, type: String,
+                                            extractor: MediaExtractor, i: Int): Boolean {
+        return if (mime == type) { extractor.selectTrack(i)
+            true
+        } else { false }
+    }
+
+    private fun supportedMimeTypes(mime: String?): Boolean {
+        // Formats we are supporting
+        val audioPrefix = "audio/"
+        val videoPrefix = "video/"
+        return mime?.startsWith(audioPrefix) == true || mime?.startsWith(videoPrefix) == true
+    }
+
+    private fun allocateBufferSize(format: MediaFormat): Int {
+        var inputBufferSize = -1
+        // Get the form
+        if (format.containsKey(MediaFormat.KEY_MAX_INPUT_SIZE)) {
+            inputBufferSize = format.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE)
+        }
+        return inputBufferSize
     }
 
 }

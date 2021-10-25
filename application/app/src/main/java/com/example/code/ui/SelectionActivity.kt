@@ -27,7 +27,7 @@ class SelectionActivity : AppCompatActivity() {
     }
 
     private fun mediaExtractor() {
-        DemoMediaExtractor(this).initiateForRemoteMp4Video()
+        DemoMediaExtractor(this).initilize()
     }
 
 
