@@ -8,9 +8,7 @@ import java.io.IOException
 import android.content.Context
 
 import android.content.res.AssetFileDescriptor
-import android.media.MediaCodec
 import android.media.MediaFormat.MIMETYPE_VIDEO_AVC
-import android.util.Log
 import com.example.code.Constants.endPointMp4
 import com.example.code.R
 import java.nio.ByteBuffer
@@ -20,67 +18,7 @@ class DemoMediaExtractor constructor(private val context: Context) {
 
     private val TAG: String = DemoMediaExtractor::class.java.simpleName
 
-
-    /**
-     * Remote data source
-     * * Setting the source as remote API
-     */
-    fun initiateForRemoteMp4Video() {
-
-        try {
-            val extractor = MediaExtractor()
-            extractor.setDataSource(endPointMp4)
-            val mf = extractor.getTrackFormat(0)
-
-            val bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE)
-            val sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE)
-            val mime = mf.getString(MediaFormat.KEY_MIME)
-            val channelCount = mf.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
-            val trackId = mf.getInteger(MediaFormat.KEY_TRACK_ID)
-
-            Timber.tag(TAG).d("Bit Rate: ---------> $bitRate");
-            Timber.tag(TAG).d("Sample Rate: ------> $sampleRate");
-            Timber.tag(TAG).d("Mime: -------------> $mime");
-            Timber.tag(TAG).d("Channel Count: ----> $channelCount");
-            Timber.tag(TAG).d("Track ID: ---------> $trackId");
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Timber.tag(TAG).e("Error: ---------> ${e.message}");
-        }
-
-    }
-
-    /**
-     * Local asset data source
-     * * Assuming a raw resource located at "res/raw/localaudio.mp3"
-     */
-    fun initiateForLocalMp3Video() {
-        try {
-            val extractor = MediaExtractor()
-            val afd: AssetFileDescriptor = context.resources.openRawResourceFd(R.raw.localaudio)
-            extractor.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-
-            val mf = extractor.getTrackFormat(0)
-
-            val bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE)
-            val sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE)
-            val mime = mf.getString(MediaFormat.KEY_MIME)
-            val channelCount = mf.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
-            val trackId = mf.getInteger(MediaFormat.KEY_TRACK_ID)
-
-            Timber.tag(TAG).d("Bit Rate: ---------> $bitRate");
-            Timber.tag(TAG).d("Sample Rate: ------> $sampleRate");
-            Timber.tag(TAG).d("Mime: -------------> $mime");
-            Timber.tag(TAG).d("Channel Count: ----> $channelCount");
-            Timber.tag(TAG).d("Track ID: ---------> $trackId");
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
-
-    fun initilize(){
+    fun extractDataFromDataSource(){
         val extractor = MediaExtractor()
         extractor.setDataSource(endPointMp4)
         val numTracks: Int = extractor.trackCount
@@ -143,6 +81,65 @@ class DemoMediaExtractor constructor(private val context: Context) {
             inputBufferSize = format.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE)
         }
         return inputBufferSize
+    }
+
+
+
+    /**
+     * Remote data source
+     * * Setting the source as remote API
+     */
+    fun initiateForRemoteMp4Video() {
+        try {
+            val extractor = MediaExtractor()
+            extractor.setDataSource(endPointMp4)
+            val mf = extractor.getTrackFormat(0)
+
+            val bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE)
+            val sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE)
+            val mime = mf.getString(MediaFormat.KEY_MIME)
+            val channelCount = mf.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
+            val trackId = mf.getInteger(MediaFormat.KEY_TRACK_ID)
+
+            Timber.tag(TAG).d("Bit Rate: ---------> $bitRate");
+            Timber.tag(TAG).d("Sample Rate: ------> $sampleRate");
+            Timber.tag(TAG).d("Mime: -------------> $mime");
+            Timber.tag(TAG).d("Channel Count: ----> $channelCount");
+            Timber.tag(TAG).d("Track ID: ---------> $trackId");
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Timber.tag(TAG).e("Error: ---------> ${e.message}");
+        }
+
+    }
+
+    /**
+     * Local asset data source
+     * * Assuming a raw resource located at "res/raw/localaudio.mp3"
+     */
+    fun initiateForLocalMp3Video() {
+        try {
+            val extractor = MediaExtractor()
+            val afd: AssetFileDescriptor = context.resources.openRawResourceFd(R.raw.localaudio)
+            extractor.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+
+            val mf = extractor.getTrackFormat(0)
+
+            val bitRate = mf.getInteger(MediaFormat.KEY_BIT_RATE)
+            val sampleRate = mf.getInteger(MediaFormat.KEY_SAMPLE_RATE)
+            val mime = mf.getString(MediaFormat.KEY_MIME)
+            val channelCount = mf.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
+            val trackId = mf.getInteger(MediaFormat.KEY_TRACK_ID)
+
+            Timber.tag(TAG).d("Bit Rate: ---------> $bitRate");
+            Timber.tag(TAG).d("Sample Rate: ------> $sampleRate");
+            Timber.tag(TAG).d("Mime: -------------> $mime");
+            Timber.tag(TAG).d("Channel Count: ----> $channelCount");
+            Timber.tag(TAG).d("Track ID: ---------> $trackId");
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
 }

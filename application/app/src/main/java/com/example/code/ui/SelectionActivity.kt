@@ -27,7 +27,7 @@ class SelectionActivity : AppCompatActivity() {
     }
 
     private fun mediaExtractor() {
-        DemoMediaExtractor(this).initilize()
+        DemoMediaExtractor(this).extractDataFromDataSource()
     }
 
 
