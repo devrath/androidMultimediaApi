@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">code</string>
     <string name="media_extractor">Media Extractor</string>
+    <string name="str_dash">Dash</string>
+    <string name="str_hls">Hls</string>
+    <string name="str_mp3">Mp3</string>
+    <string name="str_mp4">Mp4</string>
 </resources>
