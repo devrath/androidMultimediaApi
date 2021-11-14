@@ -32,7 +32,7 @@ class SelectionActivityViewModel : ViewModel(){
 
 
     fun validateIsMediaSelected(): Boolean {
-        return selection != MediaType.NoSelection
+        return isInitialSelectionMade
     }
 
     fun getMediaObject(): MediaObject {

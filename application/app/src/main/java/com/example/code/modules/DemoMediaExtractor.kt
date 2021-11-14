@@ -9,7 +9,6 @@ import android.content.Context
 
 import android.content.res.AssetFileDescriptor
 import android.media.MediaCodec
-import android.media.MediaFormat.MIMETYPE_VIDEO_AVC
 import android.media.MediaMuxer
 import android.os.Environment
 import com.example.code.Constants.endPointMp4
@@ -28,13 +27,10 @@ class DemoMediaExtractor(private val context: Context, val mediaObject: MediaObj
     fun extractDataFromDataSource(){
         val extractor = MediaExtractor()
         extractor.setDataSource(mediaObject.url)
-        val numTracks: Int = extractor.trackCount
-        // Select the track that we need
-        selectTrack(numTracks, extractor,mediaObject.mediaMime)
+        TrackInfoExtractor(extractor).invoke()
         // Release the extractor
         extractor.release();
     }
-
 
     private fun selectTrack(numTracks: Int, extractor: MediaExtractor, type: String) {
 
