@@ -14,20 +14,6 @@
         android:layout_centerInParent="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipDash"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_dash" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipHls"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_hls" />
-
-        <com.google.android.material.chip.Chip
             android:id="@+id/chipMp3"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
@@ -40,6 +26,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_mp4" />
+
+        <!--<com.google.android.material.chip.Chip
+           android:id="@+id/chipDash"
+           style="@style/Widget.MaterialComponents.Chip.Filter"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/str_dash" />
+
+       <com.google.android.material.chip.Chip
+           android:id="@+id/chipHls"
+           style="@style/Widget.MaterialComponents.Chip.Filter"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/str_hls" />-->
 
     </com.google.android.material.chip.ChipGroup>
 

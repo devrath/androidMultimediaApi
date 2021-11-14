@@ -14,22 +14,23 @@ import android.media.MediaMuxer
 import android.os.Environment
 import com.example.code.Constants.endPointMp4
 import com.example.code.R
+import com.example.code.models.MediaObject
 import java.io.File
 import java.lang.Exception
 import java.nio.ByteBuffer
 import java.util.*
 
 
-class DemoMediaExtractor constructor(private val context: Context) {
+class DemoMediaExtractor(private val context: Context, val mediaObject: MediaObject) {
 
     private val TAG: String = DemoMediaExtractor::class.java.simpleName
 
     fun extractDataFromDataSource(){
         val extractor = MediaExtractor()
-        extractor.setDataSource(endPointMp4)
+        extractor.setDataSource(mediaObject.url)
         val numTracks: Int = extractor.trackCount
         // Select the track that we need
-        selectTrack(numTracks, extractor,MIMETYPE_VIDEO_AVC)
+        selectTrack(numTracks, extractor,mediaObject.mediaMime)
         // Release the extractor
         extractor.release();
     }
