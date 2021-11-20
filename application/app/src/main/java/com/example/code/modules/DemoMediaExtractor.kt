@@ -31,47 +31,4 @@ class DemoMediaExtractor(private val context: Context, val mediaObject: MediaObj
         // Release the extractor
         extractor.release();
     }
-
-
-    private fun copySamplesToMuxer(
-        muxer: MediaMuxer,
-        extractorToMuxerTrackIndexMap: HashMap<Int, Int>,
-        trackIndex: Int,
-        inputBuffer: ByteBuffer,
-        bufferInfo: MediaCodec.BufferInfo
-    ) {
-
-        try {
-
-            muxer.start()
-
-            var shouldProcess = true
-
-            while (shouldProcess) {
-                extractorToMuxerTrackIndexMap[trackIndex]?.let { trackIndexInMuxer ->
-                    muxer.writeSampleData(trackIndexInMuxer, inputBuffer, bufferInfo)
-                }
-            }
-
-            muxer.stop()
-
-        }catch (ex: Exception){
-            val errorMsg = ex.message
-            Timber.tag(TAG).e(errorMsg)
-            ex.printStackTrace()
-        }
-
-    }
-
-    private fun addTracksToMuxerAndGetIndexMap(
-        trackCount: Int, format: MediaFormat, muxer: MediaMuxer
-    ): HashMap<Int, Int> {
-        val extractorToMuxerTrackIndexMap: HashMap<Int, Int> = HashMap(trackCount)
-        for (i in 0 until trackCount) {
-            extractorToMuxerTrackIndexMap[i] = muxer.addTrack(format)
-        }
-        return extractorToMuxerTrackIndexMap
-    }
-
-
 }

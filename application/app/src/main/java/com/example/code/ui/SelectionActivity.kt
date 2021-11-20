@@ -3,8 +3,10 @@ package com.example.code.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.example.code.Constants
 import com.example.code.R
 import com.example.code.databinding.ActivitySelectionBinding
+import com.example.code.models.MediaObject
 import com.example.code.modules.DemoMediaExtractor
 import com.example.code.sealed.MediaType
 import com.example.code.vm.SelectionActivityViewModel
@@ -31,9 +33,10 @@ class SelectionActivity : AppCompatActivity() {
         binding.apply {
 
             mediaExtractorId.setOnClickListener {
-                if(viewModel.validateIsMediaSelected()){
+                /*if(viewModel.validateIsMediaSelected()){
                     mediaExtractor()
-                }
+                }*/
+                mediaExtractor()
             }
 
             chipGroupContainerId.mediaGroupId.setOnCheckedChangeListener { group, checkedId ->
@@ -47,8 +50,9 @@ class SelectionActivity : AppCompatActivity() {
     }
 
     private fun mediaExtractor() {
-
-        DemoMediaExtractor(this,viewModel.getMediaObject()).extractDataFromDataSource()
+        // val mediaObject = MediaObject(url = Constants.endPointMp4,mediaMime = Constants.mimeTypeMp4)
+        val mediaObject =  MediaObject(url = Constants.endPointMp3,mediaMime = Constants.mimeTypeMp3)
+        DemoMediaExtractor(this,mediaObject).extractDataFromDataSource()
     }
 
 
