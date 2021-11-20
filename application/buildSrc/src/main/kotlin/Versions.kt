@@ -9,4 +9,4 @@ object Versions {
     const val junitAndroid = "1.1.3"
     const val jUnit = "4.12"
     const val espressoCore = "3.4.0"
-}
+    const val gson = "2.8.9" }

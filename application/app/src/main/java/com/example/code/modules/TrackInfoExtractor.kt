@@ -2,10 +2,15 @@ package com.example.code.modules
 
 import android.media.MediaExtractor
 import android.media.MediaFormat
+import com.example.code.models.BasicTrackInfo
+import com.example.code.models.TrackParams
+import com.google.gson.Gson
 import timber.log.Timber
 import java.lang.Exception
 
-class TrackInfoExtractor(private val extractor: MediaExtractor) {
+class TrackInfoExtractor(
+    private val extractor: MediaExtractor, private val gson : Gson
+) {
 
     private val TAG: String = TrackInfoExtractor::class.java.simpleName
 
@@ -24,6 +29,7 @@ class TrackInfoExtractor(private val extractor: MediaExtractor) {
         // -----------------> Track type
         const val AUDIO_PREFIX = "audio/"
         const val VIDEO_PREFIX = "video/"
+        const val UND = "und"
     }
 
     operator fun invoke() {
@@ -79,7 +85,92 @@ class TrackInfoExtractor(private val extractor: MediaExtractor) {
                 }
                 Timber.tag(TAG).d("<------------------------------------------------>")
             }
+        }else{
+            Timber.tag(TAG).d("There are no tracks available")
         }
+    }
+
+
+    /**
+     * Checking If the audio and Video tracks are available
+     * Checking how many audio and video tracks are present
+     */
+    fun prepTrackInfo(): BasicTrackInfo {
+        var audioTracks = 0
+        var videoTracks = 0
+
+        val trackParams:  ArrayList<TrackParams> = arrayListOf()
+
+        val numTracks: Int = extractor.trackCount
+
+        if(numTracks>0){
+            for(i in 0 until numTracks){
+                val format: MediaFormat = extractor.getTrackFormat(i)
+                var languageDefined = false
+                var languageName = ""
+                var audioPresent = false
+                var videoPresent = false
+                var mime = ""
+
+                if(format.containsKey(MIME)){
+                    format.getString(MIME)?.let { currentMime ->
+                        mime = currentMime
+                        when {
+                            currentMime.startsWith(AUDIO_PREFIX) -> {
+                                audioPresent = true
+                                audioTracks += 1
+
+                                if(format.containsKey(LANGUAGE)){
+                                    format.getString(LANGUAGE)?.let {
+                                        if(it == UND){
+                                            languageDefined = false
+                                            languageName = ""
+                                        }else{
+                                            languageDefined = true
+                                            languageName = it
+                                        }
+                                    }
+                                }
+                            }
+                            currentMime.startsWith(VIDEO_PREFIX) -> {
+                                videoPresent = true
+                                videoTracks += 1
+
+                                if(format.containsKey(LANGUAGE)){
+                                    format.getString(LANGUAGE)?.let {
+                                        if(it == UND){
+                                            languageDefined = false
+                                            languageName = ""
+                                        }else{
+                                            languageDefined = true
+                                            languageName = it
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                val trackParam = TrackParams(
+                    trackNo = i, trackLanguageDefined = languageDefined,
+                    trackLanguage = languageName, isAudioPresent = audioPresent,
+                    isVideoPresent = videoPresent, mime = mime
+                )
+
+                trackParams.add(trackParam)
+            }
+        }else{
+            Timber.tag(TAG).d("There are no tracks available")
+        }
+
+        val trackBuilder = BasicTrackInfo(
+            noOfAudioTracks = audioTracks, noOfVideoTracks = videoTracks,trackParams = trackParams
+        )
+
+        Timber.tag(TAG).d("Track builder Info:-> ".plus(gson.toJson(trackBuilder)))
+
+        return trackBuilder
     }
 
 }

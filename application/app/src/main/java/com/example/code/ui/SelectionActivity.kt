@@ -10,6 +10,7 @@ import com.example.code.models.MediaObject
 import com.example.code.modules.DemoMediaExtractor
 import com.example.code.sealed.MediaType
 import com.example.code.vm.SelectionActivityViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,9 +51,9 @@ class SelectionActivity : AppCompatActivity() {
     }
 
     private fun mediaExtractor() {
-        // val mediaObject = MediaObject(url = Constants.endPointMp4,mediaMime = Constants.mimeTypeMp4)
-        val mediaObject =  MediaObject(url = Constants.endPointMp3,mediaMime = Constants.mimeTypeMp3)
-        DemoMediaExtractor(this,mediaObject).extractDataFromDataSource()
+        val mediaObject = MediaObject(url = Constants.endPointMp4,mediaMime = Constants.mimeTypeMp4)
+        //val mediaObject =  MediaObject(url = Constants.endPointMp3,mediaMime = Constants.mimeTypeMp3)
+        DemoMediaExtractor(this,mediaObject, Gson()).extractDataFromDataSource()
     }
 
 
