@@ -41,6 +41,7 @@ dependencies {
     implementation(Deps.timber)
     implementation(Deps.fragmentKtx)
     implementation(Deps.hiltAndroid)
+    implementation(Deps.gson)
 
     kapt(Deps.hiltCompiler)
 
