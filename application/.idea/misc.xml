@@ -5,6 +5,8 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1480978260869565" />
         <entry key="app/src/main/res/layout/activity_selection.xml" value="0.1585144927536232" />
+        <entry key="app/src/main/res/layout/activity_simple_exo_player.xml" value="0.21145833333333333" />
+        <entry key="app/src/main/res/layout/fragment_simple_exo_player.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/include_media_chips.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_loading_dialog.xml" value="0.15677083333333333" />
       </map>

@@ -42,6 +42,7 @@ dependencies {
     implementation(Deps.fragmentKtx)
     implementation(Deps.hiltAndroid)
     implementation(Deps.gson)
+    implementation(Deps.exoplayer)
 
     kapt(Deps.hiltCompiler)
 
