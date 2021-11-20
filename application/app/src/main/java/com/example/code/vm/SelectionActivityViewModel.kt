@@ -41,7 +41,10 @@ class SelectionActivityViewModel @Inject constructor(
 
     /************** Modules **************/
     fun mediaExtractor() {
-        TrackInfoExtractor(gson).invoke(getMediaObject().url)
+        TrackInfoExtractor(gson).apply {
+            invoke(getMediaObject().url)
+            release()
+        }
     }
     /************** Modules **************/
 
