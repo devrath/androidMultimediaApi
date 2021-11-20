@@ -3,12 +3,16 @@ package com.example.code.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.example.code.R
+import androidx.lifecycle.lifecycleScope
 import com.example.code.databinding.ActivitySelectionBinding
 import com.example.code.sealed.MediaType
 import com.example.code.vm.SelectionActivityViewModel
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import com.example.code.R
+import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber
+
 
 @AndroidEntryPoint
 class SelectionActivity : AppCompatActivity() {
@@ -16,6 +20,7 @@ class SelectionActivity : AppCompatActivity() {
     private val TAG: String = SelectionActivity::class.java.simpleName
 
     private lateinit var binding: ActivitySelectionBinding
+    private lateinit var snackbar: Snackbar
 
     private val viewModel: SelectionActivityViewModel by viewModels()
 
@@ -24,6 +29,7 @@ class SelectionActivity : AppCompatActivity() {
         binding = ActivitySelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setOnClickListeners()
+        subscribeData()
     }
 
     private fun setOnClickListeners() {
@@ -40,8 +46,19 @@ class SelectionActivity : AppCompatActivity() {
                     R.id.chipMp4 -> viewModel.setInitialSelection(MediaType.Mp4Selection)
                 }
             }
-
         }
+    }
+
+    private fun subscribeData() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.progressVisibility.collect {
+                when {
+                    it ->  Timber.tag(TAG).d("Progress Shown")
+                    else -> Timber.tag(TAG).d("Progress dismissed")
+                }
+            }
+        }
+
     }
 
 }
