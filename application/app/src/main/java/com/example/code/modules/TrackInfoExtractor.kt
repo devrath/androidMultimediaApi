@@ -7,12 +7,14 @@ import com.example.code.models.TrackParams
 import com.google.gson.Gson
 import timber.log.Timber
 import java.lang.Exception
+import javax.inject.Inject
 
-class TrackInfoExtractor(
-    private val extractor: MediaExtractor, private val gson : Gson
+class TrackInfoExtractor @Inject constructor(
+    private val gson : Gson
 ) {
 
     private val TAG: String = TrackInfoExtractor::class.java.simpleName
+    private val extractor: MediaExtractor = MediaExtractor()
 
     companion object {
         // -----------------> Track properties
@@ -32,13 +34,18 @@ class TrackInfoExtractor(
         const val UND = "und"
     }
 
-    operator fun invoke() {
+    operator fun invoke(url: String) {
         // Print Track-Information
         try {
+            extractor.setDataSource(url)
             printTrackLog()
         }catch (ex:Exception){
             Timber.tag(TAG).d("Error::-> ${ex.message}")
         }
+    }
+
+    fun release() {
+        extractor.release()
     }
 
     /**

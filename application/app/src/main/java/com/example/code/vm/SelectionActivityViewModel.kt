@@ -6,9 +6,16 @@ import com.example.code.Constants.endPointMp4
 import com.example.code.Constants.mimeTypeMp3
 import com.example.code.Constants.mimeTypeMp4
 import com.example.code.models.MediaObject
+import com.example.code.modules.TrackInfoExtractor
 import com.example.code.sealed.MediaType
+import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SelectionActivityViewModel : ViewModel(){
+@HiltViewModel
+class SelectionActivityViewModel @Inject constructor(
+    private val gson : Gson
+) : ViewModel(){
 
     private var mediaList : ArrayList<MediaObject> = arrayListOf(
         // <Position 0> === MP3
@@ -23,12 +30,19 @@ class SelectionActivityViewModel : ViewModel(){
         selection = currentSelection
     }
 
-    fun getMediaObject(): MediaObject {
+    private fun getMediaObject(): MediaObject {
         return when (selection) {
             MediaType.Mp3Selection -> mediaList[0]
             MediaType.Mp4Selection -> mediaList[1]
             else -> mediaList[1]
         }
     }
+
+
+    /************** Modules **************/
+    fun mediaExtractor() {
+        TrackInfoExtractor(gson).invoke(getMediaObject().url)
+    }
+    /************** Modules **************/
 
 }
