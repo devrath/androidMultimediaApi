@@ -11,7 +11,6 @@
     <include android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chipGroupContainerId"
-        android:visibility="gone"
         layout="@layout/include_media_chips"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat

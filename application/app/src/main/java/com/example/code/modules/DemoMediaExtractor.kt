@@ -19,8 +19,8 @@ class DemoMediaExtractor(
     fun extractDataFromDataSource(){
         val extractor = MediaExtractor()
         extractor.setDataSource(mediaObject.url)
-        //TrackInfoExtractor(extractor,gson).invoke()
-        TrackInfoExtractor(extractor,gson).prepTrackInfo()
+        TrackInfoExtractor(extractor,gson).invoke()
+        //TrackInfoExtractor(extractor,gson).prepTrackInfo()
         // Release the extractor
         extractor.release();
     }

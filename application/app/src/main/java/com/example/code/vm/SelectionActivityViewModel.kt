@@ -18,21 +18,9 @@ class SelectionActivityViewModel : ViewModel(){
     )
 
     var selection : MediaType = MediaType.NoSelection
-    var isInitialSelectionMade : Boolean = false
-
-
-    fun getMedia(position:Int) : MediaObject {
-        return mediaList[position]
-    }
 
     fun setInitialSelection(currentSelection : MediaType) {
         selection = currentSelection
-        isInitialSelectionMade = true
-    }
-
-
-    fun validateIsMediaSelected(): Boolean {
-        return isInitialSelectionMade
     }
 
     fun getMediaObject(): MediaObject {

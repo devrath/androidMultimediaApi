@@ -34,9 +34,6 @@ class SelectionActivity : AppCompatActivity() {
         binding.apply {
 
             mediaExtractorId.setOnClickListener {
-                /*if(viewModel.validateIsMediaSelected()){
-                    mediaExtractor()
-                }*/
                 mediaExtractor()
             }
 
@@ -51,9 +48,9 @@ class SelectionActivity : AppCompatActivity() {
     }
 
     private fun mediaExtractor() {
-        val mediaObject = MediaObject(url = Constants.endPointMp4,mediaMime = Constants.mimeTypeMp4)
-        //val mediaObject =  MediaObject(url = Constants.endPointMp3,mediaMime = Constants.mimeTypeMp3)
-        DemoMediaExtractor(this,mediaObject, Gson()).extractDataFromDataSource()
+        // val mediaObject = MediaObject(url = Constants.endPointMp4,mediaMime = Constants.mimeTypeMp4)
+        // val mediaObject =  MediaObject(url = Constants.endPointMp3,mediaMime = Constants.mimeTypeMp3)
+        DemoMediaExtractor(this,viewModel.getMediaObject(), Gson()).extractDataFromDataSource()
     }
 
 
