@@ -1,5 +1,6 @@
 package com.example.code.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -10,6 +11,7 @@ import com.example.code.vm.SelectionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import com.example.code.R
+import com.example.code.player.ui.SimpleExoPlayerActivity
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
@@ -47,6 +49,12 @@ class SelectionActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun startScreen() {
+        val intent = Intent(this@SelectionActivity, SimpleExoPlayerActivity::class.java)
+        // intent.putExtra("Username","John Doe")
+        startActivity(intent)
     }
 
     private fun subscribeData() {
