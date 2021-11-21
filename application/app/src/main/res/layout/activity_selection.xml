@@ -26,6 +26,12 @@
             android:layout_height="wrap_content"
             android:text="@string/media_extractor" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mediaMuxerId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/media_muxer" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

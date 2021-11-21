@@ -42,6 +42,10 @@ class SelectionActivity : AppCompatActivity() {
                 viewModel.mediaExtractor()
             }
 
+            mediaMuxerId.setOnClickListener {
+                viewModel.mediaMuxer()
+            }
+
             chipGroupContainerId.mediaGroupId.setOnCheckedChangeListener { group, checkedId ->
                 when (checkedId) {
                     R.id.chipMp3 -> viewModel.setInitialSelection(MediaType.Mp3Selection)

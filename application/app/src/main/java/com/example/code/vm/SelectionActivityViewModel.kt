@@ -7,6 +7,7 @@ import com.example.code.Constants.endPointMp4
 import com.example.code.Constants.mimeTypeMp3
 import com.example.code.Constants.mimeTypeMp4
 import com.example.code.models.MediaObject
+import com.example.code.modules.MediaMuxerDemo
 import com.example.code.modules.TrackInfoExtractor
 import com.example.code.sealed.MediaType
 import com.google.gson.Gson
@@ -49,6 +50,15 @@ class SelectionActivityViewModel @Inject constructor(
     /************** Modules **************/
     fun mediaExtractor() {
         TrackInfoExtractor(gson).apply {
+            progressVisibility(isVisible = true)
+            invoke(getMediaObject().url)
+            release()
+            progressVisibility(isVisible = false)
+        }
+    }
+
+    fun mediaMuxer() {
+        MediaMuxerDemo().apply {
             progressVisibility(isVisible = true)
             invoke(getMediaObject().url)
             release()
