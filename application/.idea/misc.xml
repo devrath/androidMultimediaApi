@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_download_partial_video.xml" value="0.15833333333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1480978260869565" />
         <entry key="app/src/main/res/layout/activity_selection.xml" value="0.1585144927536232" />
         <entry key="app/src/main/res/layout/activity_simple_exo_player.xml" value="0.21145833333333333" />

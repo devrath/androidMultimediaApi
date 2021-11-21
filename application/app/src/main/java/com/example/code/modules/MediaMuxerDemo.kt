@@ -14,16 +14,26 @@ class MediaMuxerDemo {
         // Print Track-Information
         try {
             extractor.setDataSource(url)
-            //printTrackLog()
+            initiate()
         }catch (ex: Exception){
             Timber.tag(TAG).d("Error::-> ${ex.message}")
         }
     }
 
-
-
     fun release() {
         extractor.release()
+    }
+
+    private fun initiate() {
+        val numTracks: Int = extractor.trackCount
+        Timber.tag(TAG).d("Number of tracks::-> $numTracks")
+        if(numTracks>0){
+            for(i in 0 until numTracks){
+
+            }
+        }else{
+            Timber.tag(TAG).d("There are no tracks available")
+        }
     }
 
 }

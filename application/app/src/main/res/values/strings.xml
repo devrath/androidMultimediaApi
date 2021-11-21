@@ -6,4 +6,5 @@
     <string name="str_mp3">Mp3</string>
     <string name="str_mp4">Mp4</string>
     <string name="media_muxer">Media Muxer</string>
+    <string name="download_partial_video">Download Partial Video</string>
 </resources>

@@ -11,8 +11,8 @@ import com.example.code.vm.SelectionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import com.example.code.R
-import com.example.code.player.ui.SimpleExoPlayerActivity
-import com.google.android.material.snackbar.Snackbar
+import com.example.code.models.MediaObject
+import com.example.code.sealed.SelectionActivityState
 import timber.log.Timber
 
 
@@ -22,7 +22,6 @@ class SelectionActivity : AppCompatActivity() {
     private val TAG: String = SelectionActivity::class.java.simpleName
 
     private lateinit var binding: ActivitySelectionBinding
-    private lateinit var snackbar: Snackbar
 
     private val viewModel: SelectionActivityViewModel by viewModels()
 
@@ -46,6 +45,10 @@ class SelectionActivity : AppCompatActivity() {
                 viewModel.mediaMuxer()
             }
 
+            downloadPartialVideoId.setOnClickListener {
+                viewModel.partialVideoDownload()
+            }
+
             chipGroupContainerId.mediaGroupId.setOnCheckedChangeListener { group, checkedId ->
                 when (checkedId) {
                     R.id.chipMp3 -> viewModel.setInitialSelection(MediaType.Mp3Selection)
@@ -53,12 +56,6 @@ class SelectionActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun startScreen() {
-        val intent = Intent(this@SelectionActivity, SimpleExoPlayerActivity::class.java)
-        // intent.putExtra("Username","John Doe")
-        startActivity(intent)
     }
 
     private fun subscribeData() {
@@ -71,6 +68,20 @@ class SelectionActivity : AppCompatActivity() {
             }
         }
 
+        lifecycleScope.launchWhenStarted {
+            viewModel.selectionActivityUiState.collect {
+                when(it){
+                    is SelectionActivityState.StartPartialDownloadFeature -> startPartialDownloadFeature(it.mediaObject)
+                }
+            }
+        }
+
+    }
+
+    private fun startPartialDownloadFeature(mediaObject: MediaObject) {
+        val intent = Intent(this@SelectionActivity, DownloadPartialVideoActivity::class.java)
+        intent.putExtra(DownloadPartialVideoActivity.MEDIA_URL,mediaObject.url)
+        startActivity(intent)
     }
 
 }

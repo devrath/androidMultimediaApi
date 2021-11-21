@@ -1,4 +1,4 @@
-package com.example.code.player.core
+package com.example.code.player
 
 import com.google.android.exoplayer2.SimpleExoPlayer
 

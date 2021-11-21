@@ -1,13 +1,12 @@
-package com.example.code.player.ui
+package com.example.code.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.code.databinding.ActivitySimpleExoPlayerBinding
-import com.example.code.databinding.FragmentSimpleExoPlayerBinding
 import com.example.code.extensions.hide
 import com.example.code.extensions.show
-import com.example.code.player.core.SimpleExoplayerAction
-import com.example.code.player.core.SimpleExoplayerLifecycleObserver
+import com.example.code.player.SimpleExoplayerAction
+import com.example.code.player.SimpleExoplayerLifecycleObserver
 import com.google.android.exoplayer2.util.MimeTypes
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +22,7 @@ class SimpleExoPlayerActivity : AppCompatActivity() {
     private var type = MimeTypes.APPLICATION_MP4
 
     private val binding by lazy(LazyThreadSafetyMode.NONE) {
-        FragmentSimpleExoPlayerBinding.inflate(layoutInflater)
+        ActivitySimpleExoPlayerBinding.inflate(layoutInflater)
     }
 
     private lateinit var locationListener: SimpleExoplayerLifecycleObserver

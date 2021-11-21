@@ -1,4 +1,4 @@
-package com.example.code.player.core
+package com.example.code.player
 
 import android.content.Context
 import androidx.lifecycle.Lifecycle
