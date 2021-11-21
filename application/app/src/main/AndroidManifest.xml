@@ -22,8 +22,9 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".player.ui.SimpleExoPlayerActivity"
+        <activity android:name=".ui.SimpleExoPlayerActivity" android:exported="true"/>
+        <activity android:name=".ui.DownloadPartialVideoActivity"
+            android:label="@string/download_partial_video"
             android:exported="true"/>
 
     </application>
