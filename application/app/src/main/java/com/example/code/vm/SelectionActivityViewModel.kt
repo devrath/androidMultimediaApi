@@ -7,7 +7,7 @@ import com.example.code.Constants.endPointMp4
 import com.example.code.Constants.mimeTypeMp3
 import com.example.code.Constants.mimeTypeMp4
 import com.example.code.models.MediaObject
-import com.example.code.modules.MediaMuxerDemo
+import com.example.code.modules.DownloadPartialVideo
 import com.example.code.modules.TrackInfoExtractor
 import com.example.code.sealed.MediaType
 import com.example.code.sealed.SelectionActivityState
@@ -62,7 +62,7 @@ class SelectionActivityViewModel @Inject constructor(
     }
 
     fun mediaMuxer() {
-        MediaMuxerDemo().apply {
+        DownloadPartialVideo().apply {
             progressVisibility(isVisible = true)
             invoke(getMediaObject().url)
             release()
