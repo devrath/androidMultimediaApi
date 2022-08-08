@@ -1,13 +1,13 @@
-# androidMultimediaApi
-This repository demonstrates how to use android low level multimedia api's to create good experience
+<img src="https://github.com/devrath/devrath/blob/master/images/kotlin_logo.png" align="right" title="Kotlin Logo" width="120">
 
+# androidMultimediaApi
+This repository demonstrates how to use android low level multimedia api's 
 
 ## `Low level API hierarchy`
-<p align="center">
-  <img src="https://github.com/devrath/androidMultimediaApi/blob/main/assets/hierarchy.png">
-</p>
+<img align="left" height="190" width="410" src="https://github.com/devrath/androidMultimediaApi/blob/main/assets/hierarchy.png"  alt="dev_logo"/>
+:label: When we want to do more than just `recording` a media and `capturing` a media. We need to use `Low level media API's`
+</br></br></br></br></br></br></br>
 
-* When we want to do more than just `recording` a media and `capturing` a media. We need to use `Low level media API's`
 
 ## `Terminologies`
 
